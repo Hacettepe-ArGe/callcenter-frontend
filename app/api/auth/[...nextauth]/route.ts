@@ -1,14 +1,35 @@
 import NextAuth from "next-auth/next"
-import { NextAuthOptions } from "next-auth"
+import { NextAuthOptions, Session } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { User } from "@/lib/types/user"
 
 declare module "next-auth" {
-    interface Session {
-        user: User
+    interface User {
+        user: {
+            id: number;
+            name: string;
+            email: string;
+            createdAt: string;
+            totalCarbon: number;
+        };
+        token: string;
+        message: string;
     }
+
+    interface Session {
+        user: {
+            id: number;
+            name: string;
+            email: string;
+            createdAt: string;
+            totalCarbon: number;
+            token: string;
+        }
+        expires: string;
+    }
+
     interface JWT {
-        user: User
+        user: Session['user']
     }
 }
 
@@ -54,12 +75,15 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.user = user as User;
+                token.user = {
+                    ...user.user,
+                    token: user.token
+                };
             }
             return token;
         },
         async session({ session, token }) {
-            session.user = token.user as User;
+            session.user = token.user as Session['user'];
             return session;
         },
     }

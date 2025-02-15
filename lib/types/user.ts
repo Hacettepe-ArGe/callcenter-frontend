@@ -1,7 +1,7 @@
 export interface User {
     id: string;
     email: string;
-    companyName?: string;
+    name?: string;
 }
 
 export interface UserContextType {

@@ -9,12 +9,15 @@ import { MenuIcon } from "./icons/menu"
 import { Button } from "./ui/button"
 import { useState } from "react"
 import { useClickAway } from "@/hooks/use-click-away"
+import { useSession } from "next-auth/react"
+import { LayoutDashboardIcon } from "lucide-react"
 
 export function Navbar() {
     const { user, logout } = useUser()
     const pathname = usePathname()
     const [isOpen, setIsOpen] = useState(false)
     const ref = useClickAway<HTMLDivElement>(() => setIsOpen(false))
+    const { data: session } = useSession()
 
     const navLinks = [
         {
@@ -58,6 +61,15 @@ export function Navbar() {
                                 {link.label}
                             </Link>
                         ))}
+                        {session?.user && (
+                            <Link
+                                href="/dashboard"
+                                className="text-forest hover:text-forest/80 text-sm font-medium tracking-wide transition-colors flex items-center gap-2"
+                            >
+                                <LayoutDashboardIcon className="h-4 w-4" />
+                                <span className="hidden md:inline">Dashboard</span>
+                            </Link>
+                        )}
                         {user ? (
                             <Button
                                 onClick={() => logout()}
@@ -109,6 +121,16 @@ export function Navbar() {
                                     {link.label}
                                 </Link>
                             ))}
+                            {session?.user && (
+                                <Link
+                                    href="/dashboard"
+                                    className="text-forest hover:text-forest/80 text-sm font-medium tracking-wide transition-colors px-4 py-2 flex items-center gap-2"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    <LayoutDashboardIcon className="h-4 w-4" />
+                                    Dashboard
+                                </Link>
+                            )}
                             {user ? (
                                 <Button
                                     onClick={() => {
