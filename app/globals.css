@@ -72,6 +72,21 @@ body {
     background-color: var(--background) !important;
     color: var(--foreground) !important;
   }
+  :focus-visible {
+    outline: none;
+  }
+  
+  input:focus,
+  button:focus {
+    outline: none;
+    ring: 0 !important;
+  }
+
+  input:focus-visible,
+  button:focus-visible {
+    outline: none;
+    ring: 0 !important;
+  }
 }
 
 @layer base {

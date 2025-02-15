@@ -33,10 +33,13 @@ export function SignUpForm() {
         const formData = {
             email: accountData.email,
             password: accountData.password,
-            companyName: data.companyName,
+            name: data.companyName,
         }
 
+        console.log(formData)
+
         try {
+            console.log(`${apiUrl}/api/auth/register`)
             const response = await fetch(`${apiUrl}/api/auth/register`, {
                 method: "POST",
                 headers: { 
