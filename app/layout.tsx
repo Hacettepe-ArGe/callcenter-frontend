@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Khand, Poppins } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner"
+import { ThemeProvider } from "@/components/providers/theme-provider"
+import { UserProvider } from "@/components/providers/user-provider"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins',
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const khand = Khand({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-khand',
 });
 
 export const metadata: Metadata = {
@@ -23,11 +28,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${poppins.variable} ${khand.variable} font-poppins antialiased bg-cream text-forest`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <UserProvider>
+            {children}
+            <Toaster />
+          </UserProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
