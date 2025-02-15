@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { notify } from "@/lib/utils/toast"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import { useEffect } from "react"
+import { useUser } from "@/components/providers/user-provider"
 
 const formSchema = z.object({
     email: z.string().email({
@@ -21,6 +22,8 @@ const formSchema = z.object({
 
 export function SignInForm() {
     const searchParams = useSearchParams()
+    const router = useRouter()
+    const { login } = useUser()
     const email = searchParams.get('email')
     
     const form = useForm<z.infer<typeof formSchema>>({
@@ -37,12 +40,14 @@ export function SignInForm() {
         }
     }, [email, form])
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            // Your login logic here
+            await login(values.email, values.password)
             notify.success("Successfully logged in!")
+            router.push('/')
         } catch (error) {
             notify.error("Invalid credentials")
+            console.error('Login error:', error)
         }
     }
 

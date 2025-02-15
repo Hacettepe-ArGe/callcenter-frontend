@@ -21,7 +21,7 @@ export function AuthHero() {
                 <span className="font-bold">carbonbusters</span>
             </div>
             <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tight">
+                <h2 className="text-3xl font-bold tracking-tight text-text">
                     Create an account and start calculating your carbon footprint
                 </h2>
                 <p className="text-lg text-white/60">

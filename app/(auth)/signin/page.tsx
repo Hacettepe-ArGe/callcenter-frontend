@@ -10,7 +10,7 @@ export default function SignIn() {
     return (
         <div className="flex min-h-screen">
             <AuthHero />
-            <div className="w-full md:w-1/2 lg:w-5/12 p-8 relative">
+            <div className="w-full md:w-1/2 lg:w-5/12 p-4 sm:p-8 relative">
                 {process.env.NODE_ENV === "development" && (
                     <div className="absolute top-8 left-8">
                         <Link href="/dev">
@@ -23,15 +23,15 @@ export default function SignIn() {
                         </Link>
                     </div>
                 )}
-                <div className="absolute top-8 right-8">
+                <div className="absolute top-4 sm:top-8 right-4 sm:right-8">
                     <Link href="/signup">
-                        <Button variant="ghost" className="gap-2">
+                        <Button variant="ghost" className="gap-2 text-sm sm:text-base">
                             Don't have an account?
                             <span className="font-semibold">Sign up</span>
                         </Button>
                     </Link>
                 </div>
-                <div className="flex items-center justify-center h-full">
+                <div className="flex items-center justify-center h-full pt-16 sm:pt-0">
                     <div className="w-full max-w-md space-y-8">
                         <div className="space-y-2 text-center">
                             <h1 className="text-3xl font-bold">Welcome back</h1>

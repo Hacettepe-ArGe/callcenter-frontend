@@ -63,7 +63,7 @@ export function Navbar() {
                                 onClick={() => logout()}
                                 className="bg-sage/20 hover:bg-sage/30 text-forest px-6 py-2 rounded-full text-sm font-medium transition-colors tracking-wide"
                             >
-                                ÇIKIŞ YAP
+                                LOGOUT
                             </Button>
                         ) : (
                             <Link 
@@ -73,7 +73,7 @@ export function Navbar() {
                                     pathname === "/signin" && "bg-sage/30"
                                 )}
                             >
-                                GİRİŞ YAP
+                                LOGIN
                             </Link>
                         )}
                     </div>

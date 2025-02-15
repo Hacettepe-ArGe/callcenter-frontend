@@ -12,13 +12,13 @@ export default function DevLogin() {
     const { setUser } = useUser()
     
     const devAccounts = [
-        { email: "admin@dev.com", password: "test", role: "admin" as const },
+        { email: "dev@dev.dev", password: "dev", id: "dev-1" },
     ]
 
     const loginAsDev = async () => {
         const devUser: User = {
-            email: "admin@dev.com",
-            role: "admin",
+            id: "dev-1",
+            email: "dev@dev.dev",
         }
         
         try {
@@ -49,7 +49,6 @@ export default function DevLogin() {
                             onClick={() => loginAsDev()}
                         >
                             <span>{account.email}</span>
-                            <span className="text-muted-foreground">{account.role}</span>
                         </Button>
                     ))}
                 </div>

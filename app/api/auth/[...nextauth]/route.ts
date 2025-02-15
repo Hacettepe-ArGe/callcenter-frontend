@@ -19,22 +19,13 @@ const handler = NextAuth({
                 email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials) {
+            async authorize(credentials, req) {
                 if (!credentials?.email || !credentials?.password) {
                     return null
                 }
 
                 try {
-                    // For development purposes, allow specific dev login
-                    if (credentials.email === "admin@dev.com") {
-                        return {
-                            email: "admin@dev.com",
-                            role: "admin",
-                        } as User
-                    }
-
-                    // Your normal authentication logic here
-                    const response = await fetch('/api/auth/login', {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -42,12 +33,12 @@ const handler = NextAuth({
                         body: JSON.stringify(credentials),
                     });
 
-                    const user = await response.json();
-                    
-                    if (user) {
-                        return user as User;
+                    if (!response.ok) {
+                        throw new Error('Authentication failed')
                     }
-                    return null;
+
+                    const user = await response.json();
+                    return user as User;
                 } catch (error) {
                     console.error('Auth error:', error);
                     return null;
@@ -72,7 +63,7 @@ const handler = NextAuth({
             return token;
         },
         async session({ session, token }) {
-            session.user = token.user;
+            session.user = token.user as User;
             return session;
         },
     }

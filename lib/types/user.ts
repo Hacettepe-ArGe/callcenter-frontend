@@ -1,10 +1,7 @@
 export interface User {
+    id: string;
     email: string;
-    role: 'admin' | 'user';
     companyName?: string;
-    companySize?: string;
-    companyType?: string;
-    industry?: string;
 }
 
 export interface UserContextType {
