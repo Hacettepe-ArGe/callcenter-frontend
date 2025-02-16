@@ -125,7 +125,7 @@ export default function Info() {
       {/* Modified drawer div */}
       <div
         className={cn(
-          "fixed bottom-0 left-1/2 -translate-x-1/2 w-full sm:w-[90%] max-w-7xl bg-muted shadow-lg transition-all duration-300 ease-in-out overflow-hidden sm:rounded-t-xl hover:bg-sage",
+          "fixed bottom-0 left-1/2 -translate-x-1/2 w-[90%] sm:w-[90%] max-w-7xl bg-muted shadow-lg transition-all duration-300 ease-in-out overflow-hidden sm:rounded-t-xl hover:bg-sage",
           isDrawerOpen ? "h-[90vh] sm:h-[40vh]" : "h-[20vh] sm:h-[15vh]",
           !isDrawerVisible && "sm:translate-y-0 translate-y-full" // Add translation for hiding
         )}
@@ -141,7 +141,7 @@ export default function Info() {
         >
           <div className="space-y-4 max-w-5xl mx-auto py-12">
             <div className="space-y-12">
-              <h1 className={cn("text-xl sm:text-3xl  xl font-semibold", isDrawerOpen ? "text-white" : "text-forest")}>Track and Analyze Your Carbon Footprint with Carbonbusters!</h1>
+              <h1 className={cn("text-xl sm:text-3xl  xl font-semibold text-center", isDrawerOpen ? "text-white" : "text-forest")}>Track and Analyze Your Carbon Footprint with Carbonbusters!</h1>
               <p className={cn("text-sm sm:text-base text-center", isDrawerOpen ? "text-white" : "text-muted-foreground")}>
                 At Trashbusters, our Carbonbusters platform allows both individuals and businesses to monitor their carbon footprint through detailed daily, monthly, and yearly analyses. By understanding your environmental impact, you can take informed, sustainable actions.
                 Our platform provides data-driven insights and easy-to-understand reports, helping individuals optimize their energy consumption and enabling businesses to develop effective sustainability strategies.
@@ -155,88 +155,3 @@ export default function Info() {
   )
 }
 
-// Simple icon components
-function TreeIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 22v-9" />
-      <path d="M9 7h6" />
-      <path d="M12 4V2" />
-      <path d="M9 13h6" />
-      <path d="M6 20h12" />
-      <path d="M6 16h12" />
-    </svg>
-  )
-}
-
-function TargetIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <circle cx="12" cy="12" r="6" />
-      <circle cx="12" cy="12" r="2" />
-    </svg>
-  )
-}
-
-function BoltIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-    </svg>
-  )
-}
-
-function ShareIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-      <polyline points="16 6 12 2 8 6" />
-      <line x1="12" y1="2" x2="12" y2="15" />
-    </svg>
-  )
-}
