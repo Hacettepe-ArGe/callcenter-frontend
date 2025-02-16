@@ -127,6 +127,13 @@ function getCurrentMonthEmissions(emissions: Emission[]) {
   })
 }
 
+// Add this function to get top 10 emissions by carbon value
+function getTopTenEmissions(emissions: Emission[]) {
+  return emissions
+    .sort((a, b) => parseFloat(b.carbonValue) - parseFloat(a.carbonValue))
+    .slice(0, 10);
+}
+
 // Add columns definition
 const columns: ColumnDef<Emission, any>[] = [
   {
@@ -356,6 +363,9 @@ export default function DashboardPage() {
       : ((monthlyData.difference / monthlyData.previousMonth) * 100)
     : 0
 
+  // Get top 10 emissions for the table
+  const topTenEmissions = getTopTenEmissions(currentMonthEmissions)
+
   return (
     <div className="min-h-screen-navbar flex flex-col lg:flex-row gap-8">
       {/* Left Section - Company Info */}
@@ -571,13 +581,13 @@ export default function DashboardPage() {
           </Card>
         )}
 
-        {/* Add this section for the emissions table */}
+        {/* Modify the table section */}
         <div className="w-full p-4">
           <Card className="p-6 border-none bg-background/50 shadow-none">
-            <h2 className="text-xl font-semibold mb-4">Current Month Emissions</h2>
+            <h2 className="text-xl font-semibold mb-4">Top 10 Highest Emissions This Month</h2>
             <DataTable 
               columns={columns} 
-              data={currentMonthEmissions}
+              data={topTenEmissions}
               loading={isLoading} 
             />
           </Card>

@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/container"
 import { cn } from "@/lib/utils"
 import { useUser } from "@/components/providers/user-provider"
 import { Button } from "@/components/ui/button"
-import { HomeIcon, BarChart3Icon, UserIcon, Menu, UsersIcon } from "lucide-react"
+import { HomeIcon, BarChart3Icon, UserIcon, Menu, UsersIcon, Trophy } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import { useClickAway } from "@/hooks/use-click-away"
 import Image from "next/image"
@@ -18,9 +18,9 @@ const navLinks = [
     icon: <BarChart3Icon className="h-4 w-4" />,
   },
   {
-    href: "/dashboard/profile",
-    label: "Profile",
-    icon: <UserIcon className="h-4 w-4" />,
+    href: "/dashboard/leaderboard",
+    label: "Leaderboard",
+    icon: <Trophy className="h-4 w-4" />,
   },
   {
     href: "/dashboard/workers",
