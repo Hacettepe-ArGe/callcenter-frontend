@@ -424,7 +424,7 @@ export default function DashboardPage() {
                     <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
                       <div 
                         className={`h-full ${coverage.color} transition-all duration-500`}
-                        style={{ width: `${coveragePercentages[index]}%` }}
+                        style={{ width: `${coveragePercentages[index] ? coveragePercentages[index] : 0}%` }}
                       />
                     </div>
                   </div>

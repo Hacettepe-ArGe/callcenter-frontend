@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
-import { useToast } from "@/hooks/use-toast"
+import { notify } from "@/lib/utils/toast"
 
 const formSchema = z.object({
   newUsername: z.string().min(2, "Name must be at least 2 characters"),
@@ -17,7 +17,6 @@ const formSchema = z.object({
 export function ProfileForm() {
   const { data: session, update } = useSession()
   const [isLoading, setIsLoading] = useState(false)
-  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,16 +38,11 @@ export function ProfileForm() {
 
       await update({ ...session, user: { ...session?.user, name: values.newUsername } })
       
-      toast({
-        title: "Profile updated",
-        description: "Your profile has been updated successfully.",
-      })
+      notify.success(
+         "Your profile has been updated successfully.",
+      )
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      })
+      notify.error("Something went wrong. Please try again.")
     } finally {
       setIsLoading(false)
     }
