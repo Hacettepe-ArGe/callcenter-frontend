@@ -46,20 +46,18 @@ export function DataTable<TData, TValue>({
     }
   }, [data.length, onRowSelectionChange])
 
-  const handleRowSelectionChange = useCallback(
+  const handleSelectionChange = useCallback(
     (updater: RowSelectionState | ((prev: RowSelectionState) => RowSelectionState)) => {
       const newSelection = typeof updater === 'function' ? updater(rowSelection) : updater
       setRowSelection(newSelection)
       
-      
-      // get original ids not table ids
       const selectedIds = Object.keys(newSelection)
         .filter(key => newSelection[key])
-        .map(key => data[key].id)
+        .map(key => (data[parseInt(key)] as any).id)
 
       onRowSelectionChange?.(selectedIds)
     },
-    [onRowSelectionChange]
+    [data, rowSelection, onRowSelectionChange]
   )
 
   const table = useReactTable({
@@ -70,7 +68,7 @@ export function DataTable<TData, TValue>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: handleRowSelectionChange,
+    onRowSelectionChange: handleSelectionChange,
     state: {
       sorting,
       columnVisibility,

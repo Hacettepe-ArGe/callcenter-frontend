@@ -5,8 +5,17 @@ import { AuthHero } from "./components/auth-hero"
 import { SignInForm } from "./components/signin-form"
 import { SocialLogin } from "./components/social-login"
 import Link from "next/link"
+import { Suspense } from 'react'
 
 export default function SignIn() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <SignInContent />
+        </Suspense>
+    )
+}
+
+function SignInContent() {
     return (
         <div className="flex min-h-screen">
             <AuthHero />
