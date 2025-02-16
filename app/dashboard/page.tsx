@@ -311,7 +311,7 @@ export default function DashboardPage() {
 
               <div className="flex items-baseline gap-2">
                 <span className="text-6xl font-bold text-forest">
-                  -
+                  {session?.user?.points}
                 </span>
                 <span className="text-xl text-forest">
                   carbon points

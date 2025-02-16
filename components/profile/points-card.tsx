@@ -17,7 +17,7 @@ export function PointsCard() {
   const { toast } = useToast()
   
   // Get total points from session (assuming it's stored in user.totalCarbon)
-  const totalPoints = 0
+  const totalPoints = session?.user?.points || 0
   const canDonate = totalPoints >= MINIMUM_POINTS
 
   const handleDonate = async () => {
