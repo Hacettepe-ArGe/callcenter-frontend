@@ -89,7 +89,7 @@ export function AccountForm({ onSubmit }: AccountFormProps) {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className="w-full">Continue</Button>
+                <Button type="submit" className="w-full bg-sage text-white hover:bg-sage/80">Continue</Button>
             </form>
         </Form>
     )

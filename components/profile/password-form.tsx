@@ -8,6 +8,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   currentPassword: z.string().min(6, "Password must be at least 6 characters"),
@@ -21,20 +23,21 @@ const formSchema = z.object({
 export function PasswordForm() {
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
-
+  const { data: session } = useSession()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
-
+  const router = useRouter()
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true)
-      const res = await fetch("/api/profile/change-password", {
-        method: "PUT",
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/change-password`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          currentPassword: values.currentPassword,
+          oldPassword: values.currentPassword,
           newPassword: values.newPassword,
+          email: session?.user?.email,
         }),
       })
 
@@ -53,6 +56,7 @@ export function PasswordForm() {
       })
     } finally {
       setIsLoading(false)
+      router.refresh()
     }
   }
 
@@ -98,7 +102,7 @@ export function PasswordForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" disabled={isLoading} className="bg-sage text-white hover:bg-sage/80">
           {isLoading ? "Changing..." : "Change Password"}
         </Button>
       </form>

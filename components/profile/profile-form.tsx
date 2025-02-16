@@ -11,7 +11,7 @@ import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
 
 const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
+  newUsername: z.string().min(2, "Name must be at least 2 characters"),
 })
 
 export function ProfileForm() {
@@ -22,22 +22,22 @@ export function ProfileForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: session?.user?.name || "",
+      newUsername: session?.user?.name || "",
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true)
-      const res = await fetch("/api/profile/update", {
-        method: "PUT",
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/change-username`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({...values, email: session?.user?.email }),
       })
 
       if (!res.ok) throw new Error("Failed to update profile")
 
-      await update({ ...session, user: { ...session?.user, name: values.name } })
+      await update({ ...session, user: { ...session?.user, name: values.newUsername } })
       
       toast({
         title: "Profile updated",
@@ -59,7 +59,7 @@ export function ProfileForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="name"
+          name="newUsername"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Company Name</FormLabel>
@@ -70,7 +70,7 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" disabled={isLoading} className="bg-sage text-white hover:bg-sage/80">
           {isLoading ? "Saving..." : "Save Changes"}
         </Button>
       </form>

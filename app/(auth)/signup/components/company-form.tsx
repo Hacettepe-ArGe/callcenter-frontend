@@ -51,7 +51,7 @@ export function CompanyForm({ onSubmit, onBack }: CompanyFormProps) {
                     <Button type="button" variant="outline" className="w-full" onClick={onBack}>
                         Back
                     </Button>
-                    <Button type="submit" className="w-full">Create Account</Button>
+                    <Button type="submit" className="w-full bg-sage text-white hover:bg-sage/80">Create Account</Button>
                 </div>
             </form>
         </Form>

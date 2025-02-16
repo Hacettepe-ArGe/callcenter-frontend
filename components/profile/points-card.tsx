@@ -90,6 +90,7 @@ export function PointsCard() {
             <Button 
               onClick={handleDonate}
               disabled={!canDonate || donationAmount <= 0 || donationAmount > totalPoints || isLoading}
+              className="bg-sage text-white hover:bg-sage/80"
             >
               {isLoading ? "Donating..." : "Donate Points"}
             </Button>

@@ -5,7 +5,7 @@ export const colors = {
         lighter: '#D8E9D6',  // Light sage for secondary elements
     },
     sage: {
-        DEFAULT: '#96A675',  // Main color
+        DEFAULT: '#00728D',  // Main color
         light: '#D8E9D6',    // Lighter variant
     },
     mint: '#EFF1D9',        // Secondary color

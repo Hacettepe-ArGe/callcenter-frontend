@@ -53,9 +53,9 @@ export function SignInForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <h1 className="text-3xl font-bold text-forest">Welcome back</h1>
-                <p className="text-forest/60">Enter your credentials to sign in</p>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <h1 className="text-3xl font-bold text-forest text-center">Welcome back</h1>
+                <p className="text-forest/60 text-center">Enter your credentials to sign in</p>
                 <FormField
                     control={form.control}
                     name="email"
@@ -83,7 +83,7 @@ export function SignInForm() {
                     )}
                 />
                 
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full bg-sage text-white hover:bg-sage/80">
                     Sign in
                 </Button>
             </form>

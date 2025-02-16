@@ -1,12 +1,20 @@
+'use client'
+
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 
 export default function FactsPage() {
   return (
-    <div className="container mx-auto py-12 relative min-h-screen-navbar">
+    <div className="container mx-auto relative min-h-screen-navbar">
       {/* Desktop Layout (xl and above) */}
-      <div className="hidden xl:block relative min-h-[800px]">
+      <div className="hidden xl:block relative min-h-[700px]">
         {/* Center Image */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px]">
+        <motion.div
+          initial={{ opacity: 0, rotate: 180 }}
+          animate={{ opacity: 1, rotate: 0 }}
+          transition={{ duration: 2 }}
+        >
           <Image
             src="/facts.png"
             alt="Carbon Emissions Facts"
@@ -14,6 +22,7 @@ export default function FactsPage() {
             height={400}
             className="w-full h-full"
           />
+        </motion.div>
         </div>
 
         {/* Manufacturing & Industry - Top Left */}
@@ -44,7 +53,7 @@ export default function FactsPage() {
         </div>
 
         {/* Transportation - Middle Right */}
-        <div className="absolute top-[45%] right-[5%] max-w-[300px]">
+        <div className="absolute top-[42%] right-[5%] max-w-[300px]">
           <h2 className="text-2xl font-bold text-green-800 mb-2">Transportation</h2>
           <p className="text-sm">
             Cars, planes, ships, and trucks contribute <span className="font-bold">about 16%</span> of global CO₂ emissions,

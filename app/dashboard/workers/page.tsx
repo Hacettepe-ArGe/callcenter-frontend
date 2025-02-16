@@ -78,7 +78,9 @@ export default function WorkersPage() {
         <Button onClick={() => {
           setSelectedWorker(undefined)
           setIsDialogOpen(true)
-        }}>
+        }}
+          className="bg-sage text-white hover:bg-sage/80"
+        >
           <PlusIcon className="h-4 w-4 mr-2" />
           Add Worker
         </Button>

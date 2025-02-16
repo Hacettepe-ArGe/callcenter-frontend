@@ -54,7 +54,7 @@ export function Navbar() {
                                 key={link.href}
                                 href={link.href} 
                                 className={cn(
-                                    "text-forest hover:text-forest/80 text-sm font-medium tracking-wide transition-colors",
+                                    "text-forest hover:text-foret/80 text-sm font-medium tracking-wide transition-colors",
                                     pathname === link.href && "text-forest/80"
                                 )}
                             >
@@ -95,7 +95,7 @@ export function Navbar() {
                         className="md:hidden"
                         onClick={() => setIsOpen(!isOpen)}
                     >
-                        <MenuIcon className="h-6 w-6 text-forest" />
+                        <MenuIcon className="h-6 w-6 text-sage" />
                     </button>
                 </div>
             </Container>
@@ -139,7 +139,7 @@ export function Navbar() {
                                     }}
                                     className="bg-sage/20 hover:bg-sage/30 text-forest m-4 rounded-full text-sm font-medium transition-colors tracking-wide"
                                 >
-                                    ÇIKIŞ YAP
+                                    LOGOUT
                                 </Button>
                             ) : (
                                 <Link 
@@ -150,7 +150,7 @@ export function Navbar() {
                                         pathname === "/signin" && "bg-sage/30"
                                     )}
                                 >
-                                    GİRİŞ YAP
+                                    LOGIN
                                 </Link>
                             )}
                         </div>

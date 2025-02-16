@@ -57,7 +57,7 @@ export function ConsumptionList() {
               Delete Selected
             </Button>
           )}
-          <Button onClick={() => setIsDialogOpen(true)}>
+          <Button onClick={() => setIsDialogOpen(true)} className="bg-sage text-white hover:bg-sage/80">
             <PlusIcon className="h-4 w-4 mr-2" />
             Add Consumption
           </Button>

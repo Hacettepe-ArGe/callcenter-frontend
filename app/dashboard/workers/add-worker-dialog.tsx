@@ -94,7 +94,7 @@ export function AddWorkerDialog({
                 </FormItem>
               )}
             />
-            <Button type="submit">Save</Button>
+            <Button type="submit" className="bg-sage text-white hover:bg-sage/80">Save</Button>
           </form>
         </Form>
       </DialogContent>

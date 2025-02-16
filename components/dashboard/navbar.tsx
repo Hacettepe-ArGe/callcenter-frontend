@@ -10,6 +10,7 @@ import { HomeIcon, BarChart3Icon, UserIcon, Menu, UsersIcon } from "lucide-react
 import { useState, useRef, useEffect } from "react"
 import { useClickAway } from "@/hooks/use-click-away"
 import Image from "next/image"
+import { colors } from "@/lib/constants/colors"
 const navLinks = [
   {
     href: "/dashboard/consumptions",
@@ -68,6 +69,14 @@ export function DashboardNavbar() {
             <span className="hidden md:inline">Return to Home</span>
           </Link>
 
+          <Link
+            href="/dashboard/profile"
+            className="text-forest hover:text-forest/80 text-sm font-medium tracking-wide transition-colors hidden md:flex items-center gap-2"
+          >
+            <UserIcon className="h-4 w-4" />
+            Profile
+          </Link>
+
           <Button
             variant="ghost"
             onClick={logout}
@@ -111,16 +120,24 @@ export function DashboardNavbar() {
               ))}
               <Link
                 href="/"
-                className="text-forest hover:text-forest/80 text-sm font-medium tracking-wide transition-colors px-4 py-2 flex items-center gap-2"
+                    className="text-forest hover:text-forest/80 text-sm font-medium tracking-wide transition-colors px-4 py-2 flex items-center gap-2"
                 onClick={() => setIsOpen(false)}
               >
                 <HomeIcon className="h-4 w-4" />
                 Return to Home
               </Link>
+              <Link
+                href="/dashboard/profile"
+                className="text-forest hover:text-forest/80 text-sm font-medium tracking-wide transition-colors px-4 py-2 flex items-center gap-2"
+                onClick={() => setIsOpen(false)}
+              >
+                <UserIcon className="h-4 w-4" />
+                Profile
+              </Link>
               <Button
                 variant="ghost"
                 onClick={logout}
-                className="text-sm w-full justify-start px-4"
+                className="text-sm w-full justify-start px-4 hover:bg-sage/20"
               >
                 Sign out
               </Button>
