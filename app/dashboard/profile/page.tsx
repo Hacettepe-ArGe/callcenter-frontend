@@ -1,9 +1,10 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { ProfileForm } from "@/components/profile/profile-form"
 import { PasswordForm } from "@/components/profile/password-form"
 import { PointsCard } from "@/components/profile/points-card"
+import { Button } from "@/components/ui/button"
 
 export default function ProfilePage() {
   return (

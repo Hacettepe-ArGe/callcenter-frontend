@@ -6,10 +6,10 @@ import { Container } from "@/components/ui/container"
 import { cn } from "@/lib/utils"
 import { useUser } from "@/components/providers/user-provider"
 import { Button } from "@/components/ui/button"
-import { HomeIcon, BarChart3Icon, UserIcon, Menu } from "lucide-react"
+import { HomeIcon, BarChart3Icon, UserIcon, Menu, UsersIcon } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import { useClickAway } from "@/hooks/use-click-away"
-
+import Image from "next/image"
 const navLinks = [
   {
     href: "/dashboard/consumptions",
@@ -20,6 +20,11 @@ const navLinks = [
     href: "/dashboard/profile",
     label: "Profile",
     icon: <UserIcon className="h-4 w-4" />,
+  },
+  {
+    href: "/dashboard/workers",
+    label: "Workers",
+    icon: <UsersIcon className="h-4 w-4" />,
   },
 ]
 
@@ -34,7 +39,7 @@ export function DashboardNavbar() {
       <Container className="flex items-center justify-between h-full">
         <div className="flex items-center gap-8">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="font-bold">carbonbusters</span>
+            <Image src="/logo.svg" alt="Carbonbusters" width={50} height={50} />
           </Link>
 
           <div className="hidden md:flex items-center gap-4">

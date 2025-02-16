@@ -9,6 +9,7 @@ import {
   getSortedRowModel,
   SortingState,
   VisibilityState,
+  RowSelectionState,
 } from "@tanstack/react-table"
 
 import {
@@ -20,20 +21,46 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  onRowSelectionChange?: (selectedRows: number[]) => void
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  onRowSelectionChange
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+
+  // Only reset selection when data length changes
+  useEffect(() => {
+    if (data.length === 0) {
+      setRowSelection({})
+      onRowSelectionChange?.([])
+    }
+  }, [data.length, onRowSelectionChange])
+
+  const handleRowSelectionChange = useCallback(
+    (updater: RowSelectionState | ((prev: RowSelectionState) => RowSelectionState)) => {
+      const newSelection = typeof updater === 'function' ? updater(rowSelection) : updater
+      setRowSelection(newSelection)
+      
+      
+      // get original ids not table ids
+      const selectedIds = Object.keys(newSelection)
+        .filter(key => newSelection[key])
+        .map(key => data[key].id)
+
+      onRowSelectionChange?.(selectedIds)
+    },
+    [onRowSelectionChange]
+  )
 
   const table = useReactTable({
     data,
@@ -43,12 +70,13 @@ export function DataTable<TData, TValue>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange: handleRowSelectionChange,
     state: {
       sorting,
       columnVisibility,
       rowSelection,
     },
+    enableRowSelection: true,
   })
 
   return (

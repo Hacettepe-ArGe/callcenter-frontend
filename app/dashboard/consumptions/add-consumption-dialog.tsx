@@ -5,17 +5,20 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BusinessForm } from "./business-form"
 import { UserForm } from "./user-form"
+import { EmissionTypes } from "@/hooks/use-emission-types"
 
 interface AddConsumptionDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onSuccess: () => void
+  emissionTypes: EmissionTypes
 }
 
 export function AddConsumptionDialog({ 
   open, 
   onOpenChange,
-  onSuccess 
+  onSuccess,
+  emissionTypes 
 }: AddConsumptionDialogProps) {
   const [activeTab, setActiveTab] = useState<"business" | "user">("business")
 
@@ -32,10 +35,10 @@ export function AddConsumptionDialog({
             <TabsTrigger value="user">User</TabsTrigger>
           </TabsList>
           <TabsContent value="business">
-            <BusinessForm onSuccess={onSuccess} />
+            <BusinessForm onSuccess={onSuccess} emissionTypes={emissionTypes} />
           </TabsContent>
           <TabsContent value="user">
-            <UserForm onSuccess={onSuccess} />
+            <UserForm onSuccess={onSuccess} emissionTypes={emissionTypes} />
           </TabsContent>
         </Tabs>
       </DialogContent>

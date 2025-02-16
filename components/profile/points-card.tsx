@@ -7,14 +7,6 @@ import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { useToast } from "@/hooks/use-toast"
 import { Progress } from "@/components/ui/progress"
-import { 
-  Leaf, 
-  TrendingUp, 
-  HeartHandshake, 
-  AlertCircle,
-  CheckCircle2,
-  TreeDeciduous
-} from "lucide-react"
 
 const MINIMUM_POINTS = 100 // Minimum points needed to donate
 
@@ -25,7 +17,7 @@ export function PointsCard() {
   const { toast } = useToast()
   
   // Get total points from session (assuming it's stored in user.totalCarbon)
-  const totalPoints = session?.user?.totalCarbon || 0
+  const totalPoints = 0
   const canDonate = totalPoints >= MINIMUM_POINTS
 
   const handleDonate = async () => {
@@ -64,72 +56,55 @@ export function PointsCard() {
   return (
     <Card className="p-6">
       <div className="space-y-6">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
-            <Leaf className="h-5 w-5 text-green-600" />
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold">Carbon Points</h2>
-            <p className="text-muted-foreground">Track and donate your carbon points</p>
-          </div>
+        <div className="flex items-center gap-2">
+          <span className="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
+            Experimental
+          </span>
+        </div>
+        <div>
+          <h2 className="text-xl font-semibold">Carbon Points</h2>
+          <p className="text-muted-foreground">Track and donate your carbon points</p>
         </div>
 
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-forest" />
-              Progress to donation
-            </span>
-            <span className="text-sm text-muted-foreground flex items-center gap-1">
-              <TreeDeciduous className="h-4 w-4" />
+            <span className="text-sm font-medium">Progress to donation</span>
+            <span className="text-sm text-muted-foreground">
               {totalPoints} / {MINIMUM_POINTS} points
             </span>
           </div>
-          <Progress 
-            value={(totalPoints / MINIMUM_POINTS) * 100} 
-            className="bg-sage/20"
-          />
+          <Progress value={(totalPoints / MINIMUM_POINTS) * 100} />
         </div>
 
         <div className="space-y-4">
           <div className="flex items-center gap-4">
-            <div className="flex-1">
-              <Input
-                type="number"
-                placeholder="Amount to donate"
-                min={0}
-                max={totalPoints}
-                value={donationAmount || ""}
-                onChange={(e) => setDonationAmount(Number(e.target.value))}
-                disabled={!canDonate || isLoading}
-              />
-            </div>
+            <Input
+              type="number"
+              placeholder="Amount to donate"
+              min={0}
+              max={totalPoints}
+              value={donationAmount || ""}
+              onChange={(e) => setDonationAmount(Number(e.target.value))}
+              disabled={!canDonate || isLoading}
+            />
             <Button 
               onClick={handleDonate}
               disabled={!canDonate || donationAmount <= 0 || donationAmount > totalPoints || isLoading}
-              className="flex items-center gap-2"
             >
-              <HeartHandshake className="h-4 w-4" />
               {isLoading ? "Donating..." : "Donate Points"}
             </Button>
           </div>
 
           {!canDonate && (
-            <p className="text-sm text-muted-foreground flex items-start gap-2">
-              <AlertCircle className="h-4 w-4 mt-0.5 shrink-0 text-amber-500" />
-              <span>
-                You need at least {MINIMUM_POINTS} points to make a donation.
-                Keep reducing your carbon footprint to earn more points!
-              </span>
+            <p className="text-sm text-muted-foreground">
+              You need at least {MINIMUM_POINTS} points to make a donation.
+              Keep reducing your carbon footprint to earn more points!
             </p>
           )}
           
           {canDonate && (
-            <p className="text-sm text-muted-foreground flex items-start gap-2">
-              <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0 text-green-500" />
-              <span>
-                You can donate up to {totalPoints} points to support environmental projects.
-              </span>
+            <p className="text-sm text-muted-foreground">
+              You can donate up to {totalPoints} points to support environmental projects.
             </p>
           )}
         </div>

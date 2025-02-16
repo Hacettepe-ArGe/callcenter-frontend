@@ -15,7 +15,7 @@ export function SocialLogin() {
                 </div>
             </div>
 
-            <Button variant="outline" className="w-full" onClick={() => console.log("Google sign in")}>
+            <Button variant="outline" className="w-full cursor-not-allowed">
                 <GoogleIcon />
                 Sign in with Google
             </Button>

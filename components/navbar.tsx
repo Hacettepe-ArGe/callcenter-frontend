@@ -11,7 +11,7 @@ import { useState } from "react"
 import { useClickAway } from "@/hooks/use-click-away"
 import { useSession } from "next-auth/react"
 import { LayoutDashboardIcon } from "lucide-react"
-
+import Image from "next/image"
 export function Navbar() {
     const { user, logout } = useUser()
     const pathname = usePathname()
@@ -43,7 +43,7 @@ export function Navbar() {
                                 pathname === "/" && "text-forest/80"
                             )}
                         >
-                            Logo
+                            <Image src="/logo.svg" alt="Carbonbusters" width={50} height={50} />
                         </Link>
                     </div>
 

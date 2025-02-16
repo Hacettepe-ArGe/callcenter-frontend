@@ -36,10 +36,7 @@ export function SignUpForm() {
             name: data.companyName,
         }
 
-        console.log(formData)
-
         try {
-            console.log(`${apiUrl}/api/auth/register`)
             const response = await fetch(`${apiUrl}/api/auth/register`, {
                 method: "POST",
                 headers: { 

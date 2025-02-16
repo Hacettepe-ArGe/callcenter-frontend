@@ -4,24 +4,77 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { EmissionTypes } from "@/hooks/use-emission-types"
+import { useWorkers } from "@/hooks/use-workers"
+import { useSession } from "next-auth/react"
+import { notify } from "@/lib/utils/toast"
+import { useState } from "react"
 
 const formSchema = z.object({
   userId: z.string(),
+  category: z.string(),
   type: z.string(),
-  value: z.string(),
+  amount: z.string(),
 })
 
-export function UserForm({ onSuccess }: { onSuccess: () => void }) {
+interface UserFormProps {
+  onSuccess: () => void
+  emissionTypes: EmissionTypes
+}
+
+export function UserForm({ onSuccess, emissionTypes }: UserFormProps) {
+  const { data: session } = useSession()
+  const { workers, isLoading } = useWorkers()
+  const [selectedCategory, setSelectedCategory] = useState<string>("")
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
 
+  const filteredCategories = Object.entries(emissionTypes).reduce((acc, [category, types]) => {
+    if (['kagit', 'jenerator'].includes(category.toLowerCase())) {
+      return acc;
+    }
+    acc[category] = types;
+    return acc;
+  }, {} as EmissionTypes);
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Add API call here
-    onSuccess()
+    if (!session?.user?.token) {
+      notify.error("You must be logged in")
+      return
+    }
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/emissions/emission/${values.userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.user.token}`
+        },
+        body: JSON.stringify({
+          type: values.type,
+          category: values.category,
+          amount: parseFloat(values.amount),
+          scope: 'CALISAN',
+          workerId: parseInt(values.userId),
+          companyId: session.user.id,
+          name: session.user.name
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to create emission')
+      }
+
+      notify.success("Emission added successfully")
+      onSuccess()
+    } catch (error) {
+      notify.error("Failed to add emission")
+    }
   }
 
   return (
@@ -40,13 +93,51 @@ export function UserForm({ onSuccess }: { onSuccess: () => void }) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="1">User 1</SelectItem>
-                  <SelectItem value="2">User 2</SelectItem>
+                  {workers.map((worker) => (
+                    <SelectItem key={worker.id} value={worker.id.toString()}>
+                      {worker.name} - {worker.department}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
+              <FormMessage />
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category</FormLabel>
+              <Select 
+                onValueChange={(value) => {
+                  field.onChange(value)
+                  setSelectedCategory(value)
+                  // Reset type when category changes
+                  form.setValue('type', '')
+                }} 
+                defaultValue={field.value}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {Object.keys(filteredCategories).map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category.toUpperCase()}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="type"
@@ -55,28 +146,33 @@ export function UserForm({ onSuccess }: { onSuccess: () => void }) {
               <FormLabel>Type</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select consumption type" />
+                  <SelectTrigger disabled={!selectedCategory}>
+                    <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="transport">Transport</SelectItem>
-                  <SelectItem value="energy">Energy</SelectItem>
-                  <SelectItem value="waste">Waste</SelectItem>
+                  {selectedCategory && filteredCategories[selectedCategory]?.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type.toUpperCase()}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
+              <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
-          name="value"
+          name="amount"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Value</FormLabel>
+              <FormLabel>Amount in {filteredCategories[selectedCategory]?.[0]}</FormLabel>
               <FormControl>
-                <Input type="number" placeholder="Enter value" {...field} />
+                <Input type="number" placeholder="Enter amount" {...field} />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />

@@ -1,7 +1,6 @@
 import NextAuth from "next-auth/next"
-import { NextAuthOptions, Session } from "next-auth"
+import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { User } from "@/lib/types/user"
 
 declare module "next-auth" {
     interface User {
@@ -11,6 +10,8 @@ declare module "next-auth" {
             email: string;
             createdAt: string;
             totalCarbon: number;
+            token: string;
+            points: number;
         };
         token: string;
         message: string;
@@ -24,6 +25,7 @@ declare module "next-auth" {
             createdAt: string;
             totalCarbon: number;
             token: string;
+            points: number;
         }
         expires: string;
     }
@@ -33,26 +35,41 @@ declare module "next-auth" {
     }
 }
 
+interface ExtendedToken {
+    id: number;
+    name: string;
+    email: string;
+    token: string;
+    points: number;
+}
+
 export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
-            name: "Credentials",
             credentials: {
-                email: { label: "Email", type: "email" },
+                email: { label: "Email", type: "text" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials) {
+            async authorize(credentials, req) {
+                if (!credentials?.email || !credentials?.password) return null
+                
                 try {
                     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(credentials),
+                        headers: { "Content-Type": "application/json" }
                     })
                     
-                    const user = await res.json()
-                    
-                    if (res.ok && user) {
-                        return user
+                    const userData = await res.json()
+
+                    if (res.ok && userData) {
+                        return {
+                            ...userData,
+                            user: {
+                                ...userData.user,
+                                token: userData.token
+                            }
+                        }
                     }
                     return null
                 } catch (error) {
@@ -75,15 +92,16 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.user = {
-                    ...user.user,
-                    token: user.token
-                };
+                token.user = user.user;
+                token.accessToken = user.user.token;
             }
             return token;
         },
         async session({ session, token }) {
-            session.user = token.user as Session['user'];
+            if ('user' in token) {
+                session.user = token.user as Session['user'];
+                session.user.token = token.accessToken as string;
+            }
             return session;
         },
     }

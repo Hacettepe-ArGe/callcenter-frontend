@@ -1,7 +1,7 @@
 "use client"
 
 import { SessionProvider, useSession, signIn, signOut } from "next-auth/react"
-import { createContext, useContext } from "react"
+import { createContext, useContext, useState, useEffect } from "react"
 import { User, UserContextType } from "@/lib/types/user"
 import { useRouter } from "next/navigation"
 import { notify } from "@/lib/utils/toast"
@@ -81,8 +81,8 @@ export function UserProviderOld({ children }: { children: React.ReactNode }) {
             // Here you would typically validate the token with your backend
             if (token === process.env.BYPASS_TOKEN) {
                 setUser({
+                    id: "1",
                     email: "admin@dev.com",
-                    role: "admin",
                 })
             }
         } catch (error) {
@@ -98,8 +98,8 @@ export function UserProviderOld({ children }: { children: React.ReactNode }) {
             // Here you would typically make an API call to your backend
             // For now, we'll simulate a successful login
             const mockUser: User = {
+                id: "1",
                 email,
-                role: email.includes('admin') ? 'admin' : 'user',
             }
 
             setUser(mockUser)
