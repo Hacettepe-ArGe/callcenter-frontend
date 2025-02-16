@@ -42,7 +42,9 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
-                if (!credentials?.email || !credentials?.password) return null
+                if (!credentials?.email || !credentials?.password) {
+                    throw new Error("Please enter your email and password")
+                }
                 
                 try {
                     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
@@ -62,16 +64,21 @@ export const authOptions: NextAuthOptions = {
                             }
                         }
                     }
-                    return null
-                } catch (error) {
-                    console.error('Auth error:', error)
-                    return null
+
+                    if (!res.ok) {
+                        throw new Error(userData.message || "Invalid credentials")
+                    }
+                    
+                    throw new Error("Invalid credentials")
+                } catch (error: any) {
+                    throw new Error(error.message || "Authentication failed")
                 }
             }
         })
     ],
     pages: {
         signIn: '/signin',
+        error: '/auth/error',
     },
     session: {
         strategy: "jwt",
